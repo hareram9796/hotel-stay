@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SkyRoute – Hotel Availability</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">✈️ <strong>SkyRoute</strong> <span>Hotels</span></div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SEARCH FORM -->
+  <section class="search-card">
+    <h2>Find Available Hotels</h2>
+    <form id="searchForm" onsubmit="handleSearch(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Destination <span class="req">*</span></label>
+          <select id="destination" required>
+            <option value="">Select destination…</option>
+            <optgroup label="🇮🇳 Domestic">
+              <option value="Mumbai">Mumbai</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Bangalore">Bangalore</option>
+              <option value="Chennai">Chennai</option>
+              <option value="Hyderabad">Hyderabad</option>
+            </optgroup>
+            <optgroup label="🌍 International">
+              <option value="Paris">Paris</option>
+              <option value="London">London</option>
+              <option value="New York">New York</option>
+              <option value="Dubai">Dubai</option>
+              <option value="Tokyo">Tokyo</option>
+              <option value="Sydney">Sydney</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Check-in <span class="req">*</span></label>
+          <input type="date" id="checkIn" required/>
+        </div>
+        <div class="form-group">
+          <label>Check-out <span class="req">*</span></label>
+          <input type="date" id="checkOut" required/>
+        </div>
+        <div class="form-group">
+          <label>Room Type</label>
+          <select id="roomType">
+            <option value="">Any</option>
+            <option value="Standard">Standard</option>
+            <option value="Deluxe">Deluxe</option>
+            <option value="Suite">Suite</option>
+          </select>
+        </div>
+      </div>
+      <div id="searchError" class="alert alert-error" style="display:none"></div>
+      <button type="submit" class="btn-primary" id="searchBtn">Search Hotels</button>
+    </form>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="resultsSection" style="display:none">
+    <div class="results-header">
+      <h3 id="resultsTitle"></h3>
+      <div class="sort-row">
+        <label>Sort by:</label>
+        <select id="sortSelect" onchange="sortResults()">
+          <option value="price-asc">Price ↑ (Low to High)</option>
+          <option value="price-desc">Price ↓ (High to Low)</option>
+          <option value="provider">Provider</option>
+        </select>
+      </div>
+    </div>
+    <div id="resultsGrid" class="results-grid"></div>
+  </section>
+
+  <!-- EMPTY STATE -->
+  <div id="emptyState" style="display:none" class="empty-state">
+    <div class="empty-icon">🏨</div>
+    <h3>No rooms available</h3>
+    <p>Try different dates, destination, or room type.</p>
+  </div>
+
+  <!-- RESERVATION FORM MODAL -->
+  <div class="modal-overlay" id="reserveModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeReserveModal()">✕</button>
+      <h2>Reserve Room</h2>
+      <div id="reserveSummary" class="reserve-summary"></div>
+      <form id="reserveForm" onsubmit="handleReserve(event)">
+        <div class="form-group">
+          <label>Guest Name <span class="req">*</span></label>
+          <input type="text" id="guestName" placeholder="Full name" required/>
+        </div>
+        <div class="form-group">
+          <label>Document Type <span class="req">*</span></label>
+          <select id="docType" required onchange="validateDocClient()">
+            <option value="Passport">Passport</option>
+            <option value="NationalId">National ID</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Document Number <span class="req">*</span></label>
+          <input type="text" id="docNumber" placeholder="e.g. AB123456" required/>
+        </div>
+        <div id="docWarning" class="alert alert-warn" style="display:none"></div>
+        <div id="reserveError" class="alert alert-error" style="display:none"></div>
+        <button type="submit" class="btn-primary">Confirm Reservation</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- CONFIRMATION -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal modal-confirm">
+      <div class="confirm-icon">🎉</div>
+      <h2>Booking Confirmed!</h2>
+      <div id="confirmDetails" class="confirm-details"></div>
+      <button class="btn-primary" onclick="closeConfirmModal()">Done</button>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <p>SkyRoute Hotel Availability — Powered by PremierStays & BudgetNests</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
